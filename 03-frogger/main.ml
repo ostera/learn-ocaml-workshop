@@ -5,6 +5,8 @@ open! Import
 open Scaffold
 open Draw
 
+[@@@warning "-27"]
+
 let draw_background screen (config : Config.t) (wad : Wad.t) =
   Image_impl.draw screen wad.background
     0. 0.
