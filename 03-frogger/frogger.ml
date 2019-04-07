@@ -1,6 +1,8 @@
 open Base
 open Scaffold
 
+[@@@warning "-27-32"]
+
 module Frog = struct
   type t =
     { position : Position.t
