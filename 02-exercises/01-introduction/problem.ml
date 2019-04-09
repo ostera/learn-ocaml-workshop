@@ -1,4 +1,4 @@
-(* Welcome to Jane Street's OCaml challenges!
+(* Welcome to OCaml challenges!
 
    This exercise is just meant to familiarize you with the system.
 

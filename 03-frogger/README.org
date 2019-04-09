@@ -4,7 +4,7 @@ If you've never played Frogger, play an online version (picked at random) here:
 [[https://denodell.github.io/frogger/]]
 
 You will be writing a simplified version that discretizes time and space, which
-makes the collision and movement logic a lot easier to implement. [[http://storage.googleapis.com/jane-street-ocaml-workshop-2018-03-24-frogger/index.html][Here's]] an
+makes the collision and movement logic a lot easier to implement. [[https://ocamllabs.github.io/learn-ocaml-workshop/frogger.html][Here's]] an
 example of the finished product. Try pressing the keys ~i~ and ~u~ to see some
 fun tricks!
 
