@@ -1,0 +1,56 @@
+#+TITLE: Using the GitHub REST API
+
+Almost the whole of GitHub's functionality can be accessed and controlled using
+their REST API. MirageOS includes a library for OCaml which wraps many of these
+APIs, providing an easy and convenient way to query and control GitHub from the
+command line.
+
+You will be writing an OCaml reimplementation of some parts of GitHub's own
+[[https://github.com/github/hub][hub CLI]].
+
+* Preparation
+  Make sure your switch has the lwt_ssl and github-unix opam packages installed.
+  You may first want to run =opam depext lwt_ssl= or ensure that pkg-config and
+  the OpenSSL developement headers are installed.
+
+* Build and run
+  Type =dune build hub.exe= to build, and =dune exec hub.exe -- args= to run it.
+
+* Challenges
+  It's possible to start off trying out the bindings in utop. Just issue
+  =#thread;;= to load system threading support and then =#require "github-unix";;=
+  to get going.
+
+  The bindings live within the Github "namespace" with a module corresponding to
+  each section of the REST API. For this exercise, you'll mostly be using the
+  Issue and Pull modules which correspond to the Issues and Pull Requests APIs.
+
+  Like most of Mirage, the library is structured around a monad, which is defined
+  in the aptly named Monad module. =Commands.show_issue= is a good place to start,
+  and you will see that =Github.Issue.get= is the main call you'll want. Having
+  got a promise back, you want to use =GitHub.Monad.run= in order to get something
+  you can pass to =Lwt_main.run= in order to get an actual value.
+
+  =Commands.list_issues= and =Commands.list_prs= are similar to each other, but
+  you'll need to investigate the =Github.Stream= module. Rather than resorting to
+  =to_list=, see if you can use =Github.Stream.next= to iterate over only the first
+  10 issues/prs returned.
+
+  Finally, =checkout_pr= gives an opportunity to interact with the current
+  directory - it's up to you whether you want to use Lwt_unix to interact with Git,
+  the vanilla OCaml Unix library (particular Unix.open_process, to query git) or,
+  for a complete MirageOS experience, the ocaml-git library to determine the state
+  of the current directory.
+
+* Extensions
+  If you look in =hub.ml=, you can see the definition for the command line parameters.
+  Lots of extensions to these commands can be achieved by adding extra flags similar
+  to user_t and repo_t. These can include result limiting, sorting orders, and so on.
+
+  Running anonymously, you may quickly hit GitHub's rate limiting on REST API calls.
+  There are a couple of ways around this - the best is to take advantage of the
+  =git jar= command installed. All API calls have a =?token= optional parameter which
+  can be either a login token or an OAUTH token. github-unix installs the git jar command
+  which allows you create and store OAUTH tokens in your home directory and retrieve
+  them using the =Github_ookie_jar= module. =Github.Token= also contains functions for
+  negotiating GitHub's 2 factor login.

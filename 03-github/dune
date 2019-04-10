@@ -1,0 +1,4 @@
+(executable
+  (name hub)
+  (modules hub commands)
+  (libraries cmdliner github-unix))
